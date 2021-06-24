@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   loading = false;
   submitted = false;
-  msgErr!: '';
+  msgErr!: string;
 
   constructor(
     private formBuilder: FormBuilder,

@@ -1,0 +1,45 @@
+<h1 *ngIf="isAddMode">Add News</h1>
+<h1 *ngIf="!isAddMode">Edit News</h1>
+
+<form [formGroup]="addUpdateForm" (ngSubmit)="onAddUpdate()">
+    <div class="form-row">
+        <div *ngIf="!isAddMode" hidden class="form-group col-5">
+            <label >Id</label>
+            <input   type="text" formControlName="_id" class="form-control" />
+        </div>
+
+        <div class="form-group col-5 mt-3">
+            <label>Title</label>
+            <input type="text" formControlName="title" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && formValue.title.errors }" />
+            <div *ngIf="submitted && formValue.title.errors" class="invalid-feedback">
+                <div *ngIf="formValue.title.errors.required">Title is required</div>
+            </div>
+        </div>
+
+        <div class="form-group col-5 mt-3">
+            <label>Sub Title</label>
+            <input type="text" formControlName="subTitle" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && formValue.subTitle.errors }" />
+            <div *ngIf="submitted && formValue.subTitle.errors" class="invalid-feedback">
+                <div *ngIf="formValue.subTitle.errors.required">SubTitle is required</div>
+            </div>
+        </div>
+        <div class="form-group col-5 mt-3">
+            <label>Description</label>
+            <textarea type="text" formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && formValue.description.errors }" ></textarea>
+            <div *ngIf="submitted && formValue.description.errors" class="invalid-feedback">
+                <div *ngIf="formValue.description.errors.required">Description is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="form-group col-5 mt-3"><div *ngIf="msgErr" class="alert alert-danger">{{msgErr}}</div></div>
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+        </button>
+        <a routerLink="/news" class="btn btn-link">Cancel</a>
+    </div>
+</form>

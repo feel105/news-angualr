@@ -19,12 +19,7 @@ export class RegisterComponent implements OnInit {
   submitted = false;
   msgErr!: '';
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private authservice: AuthModelService
-  ) {}
+  constructor(private router: Router, private authservice: AuthModelService) {}
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({

@@ -15,6 +15,16 @@ export class NewsService {
   private socket: any;
 
   constructor(private authModelService: AuthModelService) {
+    this.connectSocket();
+    // const currentUser = this.authModelService.currentAuthorValue;
+    // const token = currentUser.authToken;
+    // //socket connect using Token
+    // this.socket = io(environment.socketUrl, {
+    //   query: { token },
+    // });
+  }
+
+  connectSocket() {
     const currentUser = this.authModelService.currentAuthorValue;
     const token = currentUser.authToken;
     //socket connect using Token
@@ -23,9 +33,13 @@ export class NewsService {
     });
   }
 
+  disconnectSocket() {
+    this.socket.disconnect();
+  }
+
   //getNews by News id
-  getNewsById(data: News) {
-    this.socket.emit('getNewsById', data);
+  getNewsById(id: string) {
+    this.socket.emit('getNewsById', id);
   }
 
   //Add News
@@ -38,6 +52,11 @@ export class NewsService {
     this.socket.emit('editNews', data);
   }
 
+  //delete News
+  delete(id: string) {
+    this.socket.emit('deleteNews', id);
+  }
+
   getAllNews() {
     this.socket.emit('allNews', '');
   }
@@ -48,8 +67,33 @@ export class NewsService {
         observer.next(message);
       });
     });
-    /*this.socket.on('allNews', (data: any) => {
-      console.log('Received allNews from Websocket Server', data);
-    });*/
+  }
+  getNews() {
+    return new Observable((observer) => {
+      this.socket.on('getNewsById', (msg: any) => {
+        observer.next(msg);
+      });
+    });
+  }
+  getAddNews() {
+    return new Observable((observer) => {
+      this.socket.on('addNews', (msg: any) => {
+        observer.next(msg);
+      });
+    });
+  }
+  getEditNews() {
+    return new Observable((observer) => {
+      this.socket.on('editNews', (msg: any) => {
+        observer.next(msg);
+      });
+    });
+  }
+  getDeleteNews() {
+    return new Observable((observer) => {
+      this.socket.on('deleteNews', (msg: any) => {
+        observer.next(msg);
+      });
+    });
   }
 }
